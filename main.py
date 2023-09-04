@@ -27,7 +27,7 @@ urls = []
 for c, url in enumerate(playlist.video_urls):
     print(url)
     urls.append(url)
-
+c+=1
 def yesno_input(prompt:str):
     while True:
         yn = input(prompt).lower()
