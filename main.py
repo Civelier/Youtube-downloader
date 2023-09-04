@@ -39,22 +39,16 @@ def yesno_input(prompt:str):
 # physically downloading the audio track
 print(f"Found {c} videos.")
 for i, video in enumerate(urls):
-    while True:
-        print(f"Downloading video {i}/{c} ... ", end='')
-        try:
-            videoStream = YouTube(video).streams.get_highest_resolution()
-        except Exception as e:
-            print(e)
-            videoStream = None
-        if videoStream is None:
-            print(f"Failed to download {video}")
-            if yesno_input("Retry?"):
-                continue
-            else:
-                break
-        else: # SUCCESS
-            videoStream.download(output_path=file_path)
-            break
-            
-
-    print("DONE")
+    print(f"Looking for {video}")
+    try:
+        videoStream = YouTube(video).streams.get_highest_resolution()
+    except Exception as e:
+        print(e)
+        videoStream = None
+    if videoStream is None:
+        print(f"Failed to get {video}")
+        continue
+    else: # SUCCESS
+        print(f"Downloading video {i+1}/{c} ... ", end='')
+        videoStream.download(output_path=file_path)
+        print("DONE")
