@@ -2,6 +2,7 @@ import re
 from pytube import Playlist, YouTube
 import tkinter as tk
 from tkinter import filedialog
+from pathlib import Path
 
 YOUTUBE_STREAM_ITAG = '37' # modify the value to download a different stream https://gist.github.com/sidneys/7095afe4da4ae58694d128b1034e01e2
 
@@ -40,7 +41,11 @@ print(f"Found {c} videos.")
 for i, video in enumerate(urls):
     while True:
         print(f"Downloading video {i}/{c} ... ", end='')
-        videoStream = YouTube(video).streams.get_highest_resolution()
+        try:
+            videoStream = YouTube(video).streams.get_highest_resolution()
+        except Exception as e:
+            print(e)
+            videoStream = None
         if videoStream is None:
             print(f"Failed to download {video}")
             if yesno_input("Retry?"):
@@ -50,5 +55,6 @@ for i, video in enumerate(urls):
         else: # SUCCESS
             videoStream.download(output_path=file_path)
             break
+            
 
     print("DONE")
